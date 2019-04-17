@@ -1,0 +1,4 @@
+{
+    "Accuracy": {"value":0.95, "direction":"Max"},
+    "FalsePositives": {"value":0.1, "direction":"Min"}
+}
