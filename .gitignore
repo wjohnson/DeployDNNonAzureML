@@ -3,6 +3,7 @@
 
 # Azure ML Specific
 .azureml
+.amlignore
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -4,8 +4,6 @@ Gets to 99.25% test accuracy after 12 epochs
 (there is still a lot of margin for parameter tuning).
 16 seconds per epoch on a GRID K520 GPU.
 '''
-
-from __future__ import print_function
 import keras
 from keras.datasets import mnist
 from keras.models import Sequential
@@ -13,9 +11,21 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras import backend as K
 
+# Load Azure ML Specifics
+from azureml.core import Workspace
+from azureml.core.run import Run
+
+
+run = Run.get_submitted_run()
+
 batch_size = 128
 num_classes = 10
 epochs = 2
+
+run.log("batch-size", batch_size)
+run.log("num-classes", num_classes)
+run.log("epochs", epochs)
+
 
 # input image dimensions
 img_rows, img_cols = 28, 28
@@ -71,6 +81,9 @@ score = model.evaluate(x_test, y_test, verbose=0)
 
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
+
+run.log("test-loss",score[0])
+run.log("test-accuracy",score[1])
 
 # TODO: Add code for validating against test set
 model.save("model.h5")
