@@ -88,4 +88,6 @@ run.log("test-accuracy",score[1])
 # TODO: Add code for validating against test set
 model.save("model.h5")
 # TODO: Convert to ONNX
+# Upload the model object
+run.upload_file(name = './outputs/model.h5', path_or_stream = 'model.h5')
 # TODO: Add code for registering model
