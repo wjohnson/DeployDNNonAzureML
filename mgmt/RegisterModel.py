@@ -42,3 +42,8 @@ if __name__ == "__main__":
                         workspace = ws)
 
     print('Model registered: {} \nModel Description: {} \nModel Version: {}'.format(model.name, model.description, model.version))
+    with open("./script-outputs/model.json", 'w') as fp:
+        json.dump(
+            obj = {"model_name":model.name, "model_version":model.version},
+            fp = fp
+        )
