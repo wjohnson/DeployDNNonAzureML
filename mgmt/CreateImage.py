@@ -32,6 +32,8 @@ if __name__ == "__main__":
     with open("./score/dependencies.yml","w") as f:
         f.write(dependencies.serialize_to_string())
 
+    original_dir = os.getcwd()
+    # Change directory since the docker container is expecting thing at the TLD
     os.chdir("./score")
     image_config = ContainerImage.image_configuration(
         execution_script = "score.py",
@@ -50,3 +52,12 @@ if __name__ == "__main__":
         workspace = ws)
 
     image.wait_for_creation(show_output = True)
+
+    # Change back to original directory for writing outputs
+    os.chdir(original_dir)    
+
+    with open("./script-outputs/image.json", 'w') as fp:
+        json.dump(
+            obj = {"image_name":image.name, "image_version": image.version}, 
+            fp = fp
+        )
