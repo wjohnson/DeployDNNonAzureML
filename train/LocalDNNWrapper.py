@@ -1,4 +1,4 @@
-import os
+import os, json
 # Load the Azure ML SDK Packages
 from azureml.core.runconfig import RunConfiguration
 from azureml.core import Workspace
@@ -14,6 +14,7 @@ rg = os.environ.get("RESOURCE_GROUP")
 wrkspc = os.environ.get("WORKSPACE_NAME")
 wrkspc_loc = os.environ.get("WORKSPACE_LOCATION")
 exp_name = os.environ.get("EXPERIMENT_NAME")
+model_name = os.environ.get("MODEL_NAME")
 
 
 # This Service Principal needs to have access to the resource group
@@ -39,7 +40,19 @@ run_config_user_managed = RunConfiguration()
 run_config_user_managed.environment.python.user_managed_dependencies = True
 
 print("Submitting an experiment.")
+# TODO: Enable passing in parameters with the run config.arguments
 src = ScriptRunConfig(source_directory='./train', script='LocalDNN.py', run_config=run_config_user_managed)
 run = exp.submit(src)
 
 run.wait_for_completion(show_output=True)
+
+if not os.path.exists("./script-outputs"):
+    os.makedirs("./script-outputs")
+
+with open("./script-outputs/run.json", 'w') as fp:
+    json.dump({
+        "runid":run.id, 
+        "experiment": run.experiment.name,
+        "workspace":ws.name, 
+        "modelname":model_name},
+    fp)

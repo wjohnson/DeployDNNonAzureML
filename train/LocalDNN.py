@@ -4,6 +4,7 @@ Gets to 99.25% test accuracy after 12 epochs
 (there is still a lot of margin for parameter tuning).
 16 seconds per epoch on a GRID K520 GPU.
 '''
+import os
 import keras
 from keras.datasets import mnist
 from keras.models import Sequential
@@ -21,6 +22,7 @@ run = Run.get_submitted_run()
 batch_size = 128
 num_classes = 10
 epochs = 2
+model_name = os.environ.get("MODEL_NAME")
 
 run.log("batch-size", batch_size)
 run.log("num-classes", num_classes)
@@ -86,8 +88,7 @@ run.log("test-loss",score[0])
 run.log("test-accuracy",score[1])
 
 # TODO: Add code for validating against test set
-model.save("model.h5")
+model.save(model_name)
 # TODO: Convert to ONNX
 # Upload the model object
-run.upload_file(name = './outputs/model.h5', path_or_stream = 'model.h5')
-# TODO: Add code for registering model
+run.upload_file(name = './outputs/'+model_name, path_or_stream = model_name)
