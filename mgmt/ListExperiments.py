@@ -9,7 +9,7 @@ from Workspace import get_Workspace
 if __name__ == "__main__":
     ws = get_Workspace()
     script_folder = "."
-    experiments_in_workspace = ws.experiments
+    experiments_in_workspace = list(ws.experiments.values())
 
     print("There were {exp_count} experiments in the workspace of {ws_name}".format(
         exp_count = len(experiments_in_workspace),
@@ -19,5 +19,5 @@ if __name__ == "__main__":
     for exp in experiments_in_workspace:
         print(
             "Experiment: {}".format(exp.name),
-            "Runs: {}".format(exp.get_runs())
+            "Runs: {}".format(len(list(exp.get_runs())))
         )
