@@ -25,8 +25,8 @@ print('From image.json, Image used to deploy webservice on ACI: {}\nImage Versio
 aci_config = AciWebservice.deploy_configuration(
     cpu_cores=1, 
     memory_gb=1, 
-    tags={'area': "diabetes", 'type': "regression"},
-    description='A sample description'
+    tags={'area': "mnist", 'type': "classification"},
+    description='Web service to deploy an mnist classifier'
 )
 
 aci_service_name='aciwebservice'+ datetime.datetime.now().strftime('%m%d%H')
