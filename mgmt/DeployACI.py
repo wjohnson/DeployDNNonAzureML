@@ -26,7 +26,8 @@ aci_config = AciWebservice.deploy_configuration(
     cpu_cores=1, 
     memory_gb=1, 
     tags={'area': "mnist", 'type': "classification"},
-    description='Web service to deploy an mnist classifier'
+    description='Web service to deploy an mnist classifier',
+    auth_enabled=True
 )
 
 aci_service_name='aciwebservice'+ datetime.datetime.now().strftime('%m%d%H')
