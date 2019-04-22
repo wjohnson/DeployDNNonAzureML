@@ -8,6 +8,49 @@ TODO: A sample project to train and deploy, via Azure DevOps, a Deep Learning mo
 # Build and Test
 TODO: Describe and show how to build your code and run the tests. 
 
+## Order of Scripts
+1. `train/LocalDNNWrapper.py` calls the `train/LocalDNN.py` to train the model.
+  * Generates `script-outputs/run.json`
+1. `mgmt/RegisterModel.py` takes the last run and registers it in the Azure ML Workspace.
+  * Uses `script-outputs/run.json`
+  * Generates `script-outputs/model.json`
+1. `mgmt/CreateImage.py` takes the registered model and creates an image.
+  * Uses `script-outputs/model.json`
+  * Uses `score/score.py` 
+  * Generates `score/dependencies.yml`
+  * Generates `script-outputs/image.json`
+1. `mgmt/DeployACI.py` takes the registered model and creates an image.
+  * Uses `script-outputs/image.json`
+1. `mgmt/CallACIService.py` to test the model.
+  * Uses `tests/data/mnist_test.json` to load pre-processed image data.
+1. **TODO**: Validate that the model is performing above threshold
+1. `mgmt\PrepareIOTEdge.py` to create the deployment script for IoT Edge
+  * Uses `iot-edge-template.json` and does a find and replace on several parameters.
+1. Run these commands on the az cli
+
+    az login
+    az extension add --name azure-cli-iot-ext
+    az account set --subscription $subscription_id
+    az iot edge set-modules --device-id $iot_device_id --hub-name $iot_hub_name --content deployment.json
+
+1. You've completed the pipeline!
+
+
+## Environment Variables Needed
+
+  set TENANT_ID=
+  set APPID=
+  set AZUREML_PASSWORD=
+  set SUBSCRIPTION=
+  set RESOURCE_GROUP=
+  set WORKSPACE_NAME=
+  set WORKSPACE_LOCATION=
+  set EXPERIMENT_NAME=
+  set DATABRICKS_TOKEN=
+  set DATABRICKS_WORKSPACE=
+  set MODEL_NAME=
+
+
 # Setup
 
 1. Azure DevOps
