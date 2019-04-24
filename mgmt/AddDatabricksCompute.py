@@ -15,7 +15,7 @@ try:
     databricks_compute = ComputeTarget(workspace=ws, name=databricks_workspace)
     print("Databricks Compute Target of {} already exists".format(databricks_workspace))
 except ComputeTargetException:
-    print("The Compute Target of {} will be created.".format(databricks_compute))
+    print("The Compute Target of {} will be created.".format(databricks_workspace))
 
     databricks_config = DatabricksCompute.attach_configuration(
         resource_group=rg, 
