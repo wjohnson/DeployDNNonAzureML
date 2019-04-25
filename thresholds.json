@@ -1,0 +1,4 @@
+{
+    "test-loss":{"value":0.10, "direction":"min"},
+    "test-accuracy":{"value":0.80, "direction":"max"}
+}
