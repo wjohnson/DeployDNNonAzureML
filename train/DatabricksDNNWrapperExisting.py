@@ -1,4 +1,3 @@
-import time
 from azureml.pipeline.core import Pipeline
 from azureml.pipeline.steps.databricks_step import DatabricksStep
 import os, json
@@ -7,9 +6,6 @@ from azureml.core.runconfig import RunConfiguration, PyPiLibrary
 from azureml.core import Workspace
 from azureml.core import ScriptRunConfig
 from azureml.core.authentication import ServicePrincipalAuthentication
-
-from msrest.exceptions import AuthenticationError
-
 from azureml.core import Experiment
 
 svc_pr_password = os.environ.get("AZUREML_PASSWORD")
@@ -45,19 +41,19 @@ if __name__=="__main__":
     compute_target=ws.compute_targets.get(databricks_workspace)
 
     dbr_step=DatabricksStep(
-    name = "databricks", 
+    "databricksexist", 
     inputs=None, 
     outputs=None,
-    existing_cluster_id=None, 
-    spark_version="5.3.x-cpu-ml-scala2.11", 
-    node_type="Standard_DS12_v2", 
-    num_workers=1, 
+    existing_cluster_id="0423-222152-ogres40", 
+    spark_version=None, 
+    node_type=None, 
+    num_workers=None, 
     min_workers=None, 
     max_workers=None, 
     spark_env_variables=None, 
     spark_conf=None, 
-    notebook_path="/dnn/dbr-example", 
-    notebook_params={"model_name": model_name}, 
+    notebook_path="/Shared/sample", 
+    notebook_params=None, 
     python_script_path=None, 
     python_script_params=None, 
     main_class_name=None, 
@@ -69,7 +65,7 @@ if __name__=="__main__":
     timeout_seconds=None, 
     runconfig=None, 
     maven_libraries=None, 
-    pypi_libraries=[PyPiLibrary(package="azureml-sdk")], 
+    pypi_libraries=None, 
     egg_libraries=None, 
     jar_libraries=None, 
     rcran_libraries=None, 
@@ -83,33 +79,9 @@ steps = [dbr_step]
 
 pipeline1 = Pipeline(ws, steps)
 
-try:
-    pipeline_run1 = Experiment(ws, exp_name).submit(pipeline1)
-    pipeline_run1.wait_for_completion()
-except AuthenticationError as e:
-    print("Authentication Error.  Retrying")
 
-    continue_to_run = True
-    retries = 0
-    while(continue_to_run):
-        if pipeline_run1.get_status() != "Running":
-            continue_to_run = False
-        else:
-            sleep_time = 60
-            print("Sleeping for {} minutes".format(sleep_time/60))
-            time.sleep(sleep_time)
-            retries += 1
-
-        if retries == 10:
-            print("Failed after several retries")
-            raise e
-
-if pipeline_run1.get_status() == "Failed":
-    raise Exception("The Pipeline run failed!  See Azure ML Services.")
-
-
-# Extract the child runs
-child_run = list(pipeline_run1.get_children())[0]
+pipeline_run1 = Experiment(ws, 'dbrtest').submit(pipeline1)
+pipeline_run1.wait_for_completion()
 
 #store information about the run
 if not os.path.exists("./script-outputs"):
@@ -117,9 +89,8 @@ if not os.path.exists("./script-outputs"):
 
 with open("./script-outputs/run.json", 'w') as fp:
     json.dump({
-        "runid": child_run.id, 
-        "parentrunid": pipeline_run1.id,
+        "runid":pipeline_run1.id, 
         "experiment": pipeline_run1.experiment.name,
-        "workspace": ws.name, 
-        "modelname": model_name},
+        "workspace":ws.name, 
+        "modelname":"MODEL_BASIC_1.h5"},
     fp)
