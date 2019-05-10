@@ -7,7 +7,7 @@ from Workspace import get_Workspace, svc_pr
 
 
 if __name__ == "__main__":
-    ws = Workspace.from_config(auth = svc_pr)
+    ws = Workspace.from_config(path = "./script-outputs", auth = svc_pr)
     script_folder = "."
     experiments_in_workspace = list(ws.experiments.values())
 

@@ -47,7 +47,7 @@ def get_Workspace(create_if_not_exists = False):
                 location=wrkspc_loc
             )
         else:
-            ws = Workspace()
+            raise ValueError("The defined workspace does not exist and you have declined to create it based on the current env variables.")
     return ws
 
 
@@ -62,4 +62,8 @@ if __name__ == "__main__":
         "Subscription ID: {}".format(ws.subscription_id),
         sep = '\n'
         )
-    ws.write_config(path = "./", file_name = "config.json")
+    
+    if not os.path.exists("./script-outputs"):
+        os.makedirs("./script-outputs")
+    
+    ws.write_config(path = "./script-outputs", file_name = "config.json")

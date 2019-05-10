@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     from mgmt.Workspace import svc_pr
 
-    ws = Workspace.from_config(auth = svc_pr)
+    ws = Workspace.from_config(path = "./script-outputs", auth = svc_pr)
     # Load supporting run and thresholds
     with open("./script-outputs/run.json", 'r') as fp:
         config = json.load(fp)

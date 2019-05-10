@@ -15,7 +15,7 @@ if __name__ == "__main__":
     databricks_workspace = os.environ.get("DATABRICKS_WORKSPACE")
     rg = os.environ.get("RESOURCE_GROUP")
 
-    ws = Workspace.from_config(auth=svc_pr)
+    ws = Workspace.from_config(path = "./script-outputs", auth=svc_pr)
 
     try:
         print("Trying to create databricks compute...")
