@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     from mgmt.Workspace import svc_pr
 
-    ws = Workspace.from_config(auth = svc_pr)
+    ws = Workspace.from_config(path = "./script-outputs", auth = svc_pr)
     with open("./script-outputs/model.json", 'r') as fp:
         config = json.load(fp)
     model_name = config['model_name']

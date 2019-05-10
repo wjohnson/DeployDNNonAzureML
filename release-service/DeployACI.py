@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     from mgmt.Workspace import svc_pr
 
-    ws = Workspace.from_config(auth = svc_pr)
+    ws = Workspace.from_config(path = "./script-outputs", auth = svc_pr)
 
     # Get the Image to deploy details
     with open("./script-outputs/image.json") as f:
