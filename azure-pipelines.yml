@@ -24,7 +24,7 @@ stages:
     STAGE_VAR: 'that happened'
 
   jobs:
-  - job: Build_and_Publish_Model
+  - job: Deploy_Model
     variables:  # job-level
       JOB_VAR: 'a job var'
     steps:
