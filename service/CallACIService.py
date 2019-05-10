@@ -1,8 +1,8 @@
 import numpy as np
 import requests
-from Workspace import get_Workspace
 import argparse
 import os, json, datetime, sys
+from pathlib import Path
 import numpy as np
 from operator import attrgetter
 from azureml.core import Workspace
@@ -78,7 +78,11 @@ if __name__ == "__main__":
     
     # Get workspace
     if args.aml or args.amlreq:
-        ws = get_Workspace()
+        parentdir = str(Path(os.path.abspath(__file__)).parents[1])
+        sys.path.append(parentdir)
+        from mgmt.Workspace import svc_pr
+
+        ws = Workspace.from_config(auth = svc_pr)
         # Get the ACI Details
         with open("./script-outputs/aci_webservice.json") as f:
             config = json.load(f)

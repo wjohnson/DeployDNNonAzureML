@@ -1,14 +1,19 @@
-import os, json
-from Workspace import get_Workspace
+import os, json, sys
+from pathlib import Path
 
 from azureml.core.conda_dependencies import CondaDependencies 
 from azureml.core.image import ContainerImage
 from azureml.core.model import Model
+from azureml.core import Workspace
 
 
 if __name__ == "__main__":
+    parentdir = str(Path(os.path.abspath(__file__)).parents[1])
+    sys.path.append(parentdir)
 
-    ws = get_Workspace()
+    from mgmt.Workspace import svc_pr
+
+    ws = Workspace.from_config(auth = svc_pr)
     with open("./script-outputs/model.json", 'r') as fp:
         config = json.load(fp)
     model_name = config['model_name']

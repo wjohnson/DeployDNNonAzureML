@@ -1,13 +1,19 @@
 import os, json,sys
-from Workspace import get_Workspace
+from pathlib import Path
 from azureml.core import Workspace
 from azureml.core import Run
 from azureml.core import Experiment
 from azureml.core.model import Model
 
+
 if __name__ == "__main__":
-    # Get workspace
-    ws = get_Workspace()
+    parentdir = str(Path(os.path.abspath(__file__)).parents[1])
+    sys.path.append(parentdir)
+
+    from mgmt.Workspace import svc_pr
+
+    ws = Workspace.from_config(auth = svc_pr)
+
     with open("./script-outputs/run.json", 'r') as fp:
         run_config = json.load(fp)
     run_id = str(run_config["runid"])

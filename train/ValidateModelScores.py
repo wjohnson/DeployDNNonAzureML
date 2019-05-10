@@ -1,6 +1,6 @@
-import json
-from Workspace import get_Workspace
-from azureml.core import Run, Experiment
+import os, sys, json
+from pathlib import Path
+from azureml.core import Run, Experiment, Workspace
 
 def run_metric_is_better_than_threshold(run_value, threshold_dict):
     """
@@ -27,8 +27,12 @@ def run_metric_is_better_than_threshold(run_value, threshold_dict):
 
 
 if __name__ == "__main__":
+    parentdir = str(Path(os.path.abspath(__file__)).parents[1])
+    sys.path.append(parentdir)
 
-    ws = get_Workspace()
+    from mgmt.Workspace import svc_pr
+
+    ws = Workspace.from_config(auth = svc_pr)
     # Load supporting run and thresholds
     with open("./script-outputs/run.json", 'r') as fp:
         config = json.load(fp)
