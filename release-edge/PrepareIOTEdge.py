@@ -1,13 +1,18 @@
-import os, json
-from Workspace import get_Workspace
-from azureml.core import Image
+import os, json, sys
+from pathlib import Path
+from azureml.core import Image, Workspace
 from azure.mgmt.containerregistry import ContainerRegistryManagementClient
 from azure.mgmt import containerregistry
 
 if __name__ == "__main__":
+    parentdir = str(Path(os.path.abspath(__file__)).parents[1])
+    sys.path.append(parentdir)
+    from mgmt.Workspace import svc_pr
+
     resource_group_name = os.environ.get("RESOURCE_GROUP")
 
-    ws = get_Workspace()
+    ws = Workspace.from_config(path = "./script-outputs", auth = svc_pr)
+
     module_name = "mnistclassifier"
 
     # Get the Image to deploy details
