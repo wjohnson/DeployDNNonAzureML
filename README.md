@@ -54,7 +54,7 @@ Whether you run this project through Azure DevOps or locally to experiment with 
        az login
        az extension add --name azure-cli-iot-ext
        az account set --subscription $subscription_id
-       az iot edge set-modules --device-id $iot_device_id --hub-name $iot_hub_name --content deployment.json
+       az iot edge set-modules --device-id $DEVICE_ID --hub-name $HUB_NAME --content deployment.json
 
 1. You've completed the pipeline!
 
@@ -86,8 +86,8 @@ Set these environment variables whether you're running locally or in Azure DevOp
     set DATABRICKS_TOKEN=
     set DATABRICKS_WORKSPACE=
     set MODEL_NAME=
-    set iot_device_id=
-    set iot_hub_name=
+    set DEVICE_ID=
+    set HUB_NAME=
 
 ## Azure Databricks
 
