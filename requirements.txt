@@ -42,7 +42,7 @@ msrest==0.6.6
 msrestazure==0.6.0
 ndg-httpsclient==0.5.1
 oauthlib==3.0.1
-paramiko==2.4.2
+paramiko==2.10.1
 pathspec==0.5.9
 pyasn1==0.4.5
 pycparser==2.19
